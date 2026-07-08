@@ -1,0 +1,13 @@
+@@||freemcserver.net^
+@@||panel.freemcserver.net^ 
+@@||panel.freemcserver.net^$important  
+@@||freemcserver.net^$important
+@@||*.freemcserver.net^$important
+@@*.freemcserver.net^$important
+@@freemcserver.net^
+@@panel.freemcserver.net^
+@@||pagead2.googlesyndication.com^$important
+@@||static.criteo.net^$important
+@@||f8897e7aefb68a40f38eebac2cbb1bca.safeframe.googlesyndication.com^$important
+@@||securepubads.g.doubleclick.net^$important
+@@||ssb-usw1.smartadserver.com^$important
