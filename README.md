@@ -4,6 +4,8 @@ Step 1: Ensure you have a UserScript-capable extension (something like TamperMon
 
 Step 2: Install the UserScript
 
+Alt Step 2: Install the UserScript from this link instead of the file: https://greasyfork.org/en/scripts/586174-appendix-remover-for-fmcs
+
 Step 3: Disable all adblockers for freemcserver.net (special steps for AdGuard Home users!)
 
 Step 4: Enjoy!
