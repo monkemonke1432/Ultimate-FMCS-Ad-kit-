@@ -1,0 +1,38 @@
+// ==UserScript==
+// @name         Appendix remover for FMCS
+// @namespace    http://tampermonkey.net
+// @author       MrMonke1432
+// @version      1.0
+// @match        *://*.freemcserver.net/*
+// @grant        none
+// @run-at       document-end
+// @license MIT
+// @description  It's called the appendix remover because it's the most useless organ in the human body.
+// @downloadURL https://update.greasyfork.org/scripts/586174/Appendix%20remover%20for%20FMCS.user.js
+// @updateURL https://update.greasyfork.org/scripts/586174/Appendix%20remover%20for%20FMCS.meta.js
+// ==/UserScript==
+
+
+
+(function() {
+    'use strict';
+
+    // The function that blinds the ads without breaking their layout footprint
+    const nuke = () => {
+        document.querySelectorAll('iframe, ins, .ad-container, [id*="google_ads"]').forEach(el => {
+            el.style.opacity = '0.01';       // Set to 1% to bypass advanced style detection
+            el.style.pointerEvents = 'none'; // Prevents misclicks on the invisible banners
+        });
+    };
+
+    // Wait until the window completely finishes loading all resources
+    window.addEventListener('load', () => {
+        // Step 1: Wait exactly 5 seconds after full load before the first execution
+        setTimeout(() => {
+            nuke();
+
+            // Step 2: Keep running it every 10 seconds to catch lazy-loaded ads
+            setInterval(nuke, 10000);
+        }, 5000);
+    });
+})();
