@@ -1,13 +1,15 @@
-@@||freemcserver.net^
-@@||panel.freemcserver.net^ 
-@@||panel.freemcserver.net^$important  
+! allow fmcs
 @@||freemcserver.net^$important
-@@||*.freemcserver.net^$important
-@@*.freemcserver.net^$important
-@@freemcserver.net^
-@@panel.freemcserver.net^
-@@||pagead2.googlesyndication.com^$important
-@@||static.criteo.net^$important
-@@||f8897e7aefb68a40f38eebac2cbb1bca.safeframe.googlesyndication.com^$important
-@@||securepubads.g.doubleclick.net^$important
-@@||ssb-usw1.smartadserver.com^$important
+@@||panel.freemcserver.net^$important
+
+! allow ads ONLY on fmcs
+@@||pagead2.googlesyndication.com^$domain=freemcserver.net|panel.freemcserver.net,important
+@@||securepubads.g.doubleclick.net^$domain=freemcserver.net|panel.freemcserver.net,important
+@@||static.criteo.net^$domain=freemcserver.net|panel.freemcserver.net,important
+@@||safeframe.googlesyndication.com^$domain=freemcserver.net|panel.freemcserver.net,important
+@@||smartadserver.com^$domain=freemcserver.net|panel.freemcserver.net,important
+@@||pubmatic.com^$domain=freemcserver.net|panel.freemcserver.net,important
+
+! (optional, not recommended unless it still gives you a popup) dont filter dns for your pc
+@@||*$client=XXX.XXX.XXX.XXX
+! (example: 123.456.7.890)
