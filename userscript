@@ -2,7 +2,7 @@
 // @name         Appendix remover for FMCS
 // @namespace    http://tampermonkey.net
 // @author       MrMonke1432
-// @version      1.0
+// @version      1.2
 // @match        *://*.freemcserver.net/*
 // @grant        none
 // @run-at       document-end
@@ -11,27 +11,58 @@
 // @downloadURL https://update.greasyfork.org/scripts/586174/Appendix%20remover%20for%20FMCS.user.js
 // @updateURL https://update.greasyfork.org/scripts/586174/Appendix%20remover%20for%20FMCS.meta.js
 // ==/UserScript==
-
-
+// (the anti-adblock is the appendix in this case)
 
 (function() {
     'use strict';
 
-    // The function that blinds the ads without breaking their layout footprint
+    const SELECTOR = 'iframe, ins, .ad-container, [id*="google_ads"], [id*="div-gpt-ad"], [class*="ad-slot"]';
+
+    // Anything matching this is a captcha widget, not an ad — never touch it
+    const CAPTCHA_PATTERN = /recaptcha|hcaptcha|turnstile|cf-turnstile|cf-chl|challenge/i;
+
+    const isCaptcha = (el) => {
+        // Check the element itself and its ancestors for captcha fingerprints
+        const haystack = [
+            el.src, el.id, el.className, el.title,
+            el.getAttribute && el.getAttribute('name')
+        ].filter(Boolean).join(' ');
+
+        if (CAPTCHA_PATTERN.test(haystack)) return true;
+
+        // Also check if it's nested inside a known captcha container
+        return !!el.closest('.g-recaptcha, .h-captcha, .cf-turnstile, [class*="captcha"], [id*="captcha"]');
+    };
+
     const nuke = () => {
-        document.querySelectorAll('iframe, ins, .ad-container, [id*="google_ads"]').forEach(el => {
-            el.style.opacity = '0.01';       // Set to 1% to bypass advanced style detection
-            el.style.pointerEvents = 'none'; // Prevents misclicks on the invisible banners
+        document.querySelectorAll(SELECTOR).forEach(el => {
+            if (el.dataset.nuked) return;
+            if (isCaptcha(el)) return; // skip captchas entirely
+
+            el.style.opacity = '0.01';
+            el.style.pointerEvents = 'none';
+            el.dataset.nuked = 'true';
         });
     };
 
-    // Wait until the window completely finishes loading all resources
+    let debounceTimer = null;
+    const scheduleNuke = () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(nuke, 150);
+    };
+
     window.addEventListener('load', () => {
-        // Step 1: Wait exactly 5 seconds after full load before the first execution
         setTimeout(() => {
             nuke();
 
-            // Step 2: Keep running it every 10 seconds to catch lazy-loaded ads
+            const observer = new MutationObserver(scheduleNuke);
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true,
+                attributes: true,
+                attributeFilter: ['style', 'class', 'id']
+            });
+
             setInterval(nuke, 10000);
         }, 5000);
     });
